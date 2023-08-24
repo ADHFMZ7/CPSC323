@@ -8,7 +8,8 @@ File: main.py
 class ENV:
     def __init__(self):
         self.symbols = {}
-        self.ops = {'+': lambda a, b: a+b,
+        self.ops = {
+                    '+': lambda a, b: a+b,
                     '-': lambda a, b: b-a,
                     '*': lambda a, b: a*b,
                     '/': lambda a, b: a/b,
