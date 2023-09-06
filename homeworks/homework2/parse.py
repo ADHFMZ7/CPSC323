@@ -1,7 +1,8 @@
 """
-Group names: Ahmad Aldasouqi, Kevin Kiely, Ahmir
-Assignment : No. 1 
-Due Date   : 9/4/23
+
+File: main.py
+
+
 """
 
 class ENV:
@@ -40,10 +41,14 @@ def eval_rpn(expression: str, env: ENV):
             stack.append(env[symbol])
         elif symbol in env.ops:
             op = env[symbol]
-            stack.append(op(stack.pop(), stack.pop())) 
+            stack.append(op(stack.pop(), stack.pop()))
         else:
-            print(f"Invalid symbol {symbol} detected")
-            return None
+
+            try: 
+                stack.append(int(symbol)) 
+            except:
+                print(f"Invalid symbol {symbol} detected")
+                return None
     return stack[0] 
 
 
@@ -80,6 +85,8 @@ def main():
             print("    q: quit the program") 
         elif inp[0] == 'q':
             running = 0
+        elif inp[0] == 'p':
+            print(env.symbols)
         else:
             value = eval_rpn(text, env)
             if value == None:
