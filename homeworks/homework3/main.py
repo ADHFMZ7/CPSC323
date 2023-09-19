@@ -34,7 +34,6 @@ def tokenize(file, keywords):
 
 def main():
 
-
     file = open(sys.argv[1] if len(sys.argv) > 1 else "input", "r")
 
     keywords = ["while", "for", "switch", "do", "return"]
