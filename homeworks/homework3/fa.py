@@ -24,8 +24,10 @@ def validate(input_string, fa):
     state = 0
 
     for symbol in input_string:
+        if state == 4:
+            return False
         state = fa[state][symbol] 
-    
+
     return state in fa['finish']
 
 if __name__ == '__main__':

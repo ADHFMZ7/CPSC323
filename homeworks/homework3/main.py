@@ -1,3 +1,9 @@
+"""
+Group names: Ahmad Aldasouqi, Kevin Kiely, Ahmir
+Assignment : No. 2
+Due Date   : 9/19/23
+"""
+
 import sys
 from enum import Enum
 from dataclasses import dataclass
@@ -35,11 +41,8 @@ def tokenize(file, keywords):
 def main():
 
     file = open(sys.argv[1] if len(sys.argv) > 1 else "input", "r")
-
     keywords = ["while", "for", "switch", "do", "return"]
-
     tokens = tokenize(file, keywords)
-
     fstr = "{:<12} {:<10} {:<10} {:<10}" 
 
     print (fstr.format("Token", "Number", "Identifier", "Keyword"))
