@@ -1,3 +1,9 @@
+"""
+Group names: Ahmad Aldasouqi, Kevin Kiely, Ahmir 
+Assignment : No. 7
+Due Date   : 10/31/23
+"""
+
 import sys
 
 def main():
@@ -12,39 +18,39 @@ def main():
             'W': {'a': '=E', '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': '=E' , ')': '_' , '$': '_' , '=': '=E'},
             'E': {'a': 'TY', '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': 'TY' , ')': ''  , '$':  '' , '=': ''  },
             'Y': {'a': ''  , '+': '+TY', '-': '-TY', '*': 'R'  , '/': ''   , '(': ''   , ')': '_' , '$': '_' , '=': ''  },
-            'T': {'a': 'FY', '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': ''   , ')': 'FY', '$':  '' , '=': ''  },
+            'T': {'a': 'FP', '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': 'FP' , ')': ''  , '$':  '' , '=': ''  },
             'P': {'a': ''  , '+': '_'  , '-': '_'  , '*': '*FP', '/': '/FP', '(': ''   , ')': '_' , '$':  '_', '=': ''  },
             'F': {'a': 'a' , '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': '(E)', ')': ''  , '$':  '' , '=': ''  },
             }
 
-    stack = []
-    stack.append('$')
-    stack.append('E')
+    stack = ['$', 'S']
 
     curr_char = 0
 
     while stack:
-
-        #print(stack)       
         state = stack.pop()
 
-        if state in table.keys():
+        if state == input_string[curr_char]:
+            print(stack)
+            curr_char += 1
+        elif state in table.keys() and input_string[curr_char] in table[state]:
             try:
                 entry = reversed(table[state][input_string[curr_char]])
             except KeyError:
-                print("Invalid symbol:", input_string[curr_char])
+                print("Invalid symbol:", curr_char)
                 return False
 
             for s in entry:
                 if s == '':
                     print("Input rejected")
                     return False
+                elif s == '_':
+                    continue
                 stack.append(s)
-        elif state in table['E'].keys(): 
-            print(stack)
-            curr_char += 1
+
         else:
-            print("Invalid key")
+            print("Input rejected")
+            return False
 
     print("Input accepted")
     return True
