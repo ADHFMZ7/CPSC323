@@ -12,7 +12,7 @@ def main():
         print(f"Usage: python3 {sys.argv[0]} [expression]")
         return False
      
-    input_string = sys.argv[1]
+    input_string = sys.argv[1].replace(' ', '')
 
     table = {
             'E': {'i': 'TQ', '+': ''   , '-': ''   , '*': ''   , '/': ''   , '(': 'TQ' , ')': '' , '$':  ''},
@@ -32,6 +32,7 @@ def main():
         if state == input_string[curr_char]: 
             print(stack)
             curr_char += 1
+
         elif state in table.keys() and input_string[curr_char] in table[state]:
             try:
                 entry = reversed(table[state][input_string[curr_char]])
