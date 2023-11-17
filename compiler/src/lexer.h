@@ -29,11 +29,21 @@ typedef struct Token
 // This struct handles the internal state of the scanner
 typedef struct Scanner
 {	
+	char *source;
+	Token *tokens;
+	usize tok_count;
+
 	usize start;
 	usize current;
 	usize line;
 
 } Scanner;
+
+byte *substr(byte *source, usize start, usize current);
+
+void add_token(Scanner scanner, token_type type);
+
+byte next_char(Scanner scanner);
 
 Token *tokenize_source(byte *source);
 

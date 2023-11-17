@@ -5,35 +5,49 @@
 
 #define BUF_SIZE 1024
 
-// typedef struct Token
-// {
-// 	token_type type; //
-// 	byte *lexeme;    // 
-// 	u8 line;		     // line of lexeme in source code. used for error handling
-//
-// } Token;
-//
-// // This struct handles the internal state of the scanner
-// typedef struct Scanner
-// {	
-// 	usize start;
-// 	usize current;
-// 	usize line;
-//
-// } Scanner;
+byte *substr(byte *source, usize start, usize current)
+{
 
+	i32 len = current - start;
+	byte *buffer = (byte *) malloc(sizeof(byte) * len);
 
+	for (usize ix = 0; ix < len; ix++)
+	{
+		buffer[ix] = source[start + ix];
+	}
 
-Token *tokenize_source(byte *source){
+	return buffer;
+}
+
+void add_token(Scanner scanner, token_type type)
+{
+	scanner.tokens[scanner.tok_count].type = type;
+	scanner.tokens[scanner.tok_count].lexeme = substr(scanner.source, scanner.start, scanner.current);
+	scanner.tokens[scanner.tok_count++].line= scanner.line;
+}
+
+byte next_char(Scanner scanner)
+{
+	return 'a';
+}
+
+Token *tokenize_source(byte *source)
+{
 
 	usize src_len = strlen(source);
-	Scanner scanner = {.start=0, .current=0, .line=0}; 
+	Scanner scanner = {.source = source,
+										 .tokens = (Token *) malloc(sizeof(Token) * BUF_SIZE),
+										 .tok_count = 0,
+										 .start = 0, 
+										 .current = 0, 
+									   .line= 1 };
 
 	Token *tokens = malloc(sizeof(Token) * BUF_SIZE);
 
 	while (scanner.current < src_len)
 	{
-		switch ()
+		byte c = next_char(scanner);
+		switch (c)
 		{
 			
 
