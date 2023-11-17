@@ -28,7 +28,6 @@ void add_token(Scanner *scanner, token_type type)
 
 byte next_char(Scanner *scanner)
 {
-	printf("GOT TO THIS CHAR %c\n", scanner->source[scanner->current]);
 	return scanner->source[scanner->current++];
 }
 
@@ -48,11 +47,18 @@ Token *tokenize_source(byte *source)
 	while (scanner.current < src_len)
 	{
 		byte c = next_char(&scanner);
-		// switch (c)
-		// {
-		// 	
-		//
-		// }
+		switch (c)
+		{
+			case ',': add_token(&scanner, COMMA); break;
+			case ';': add_token(&scanner, SEMICOLON); break;
+			case ':': add_token(&scanner, COLON); break;
+			case '=': add_token(&scanner, EQUALS); break;
+			case '+': add_token(&scanner, PLUS); break;
+			case '-': add_token(&scanner, MINUS); break;
+			case '*': add_token(&scanner, MUL); break;
+			case '/': add_token(&scanner, DIV); break;
+			default: break;
+		}
 
 	}
 
