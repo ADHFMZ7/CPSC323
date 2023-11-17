@@ -19,16 +19,17 @@ byte *substr(byte *source, usize start, usize current)
 	return buffer;
 }
 
-void add_token(Scanner scanner, token_type type)
+void add_token(Scanner *scanner, token_type type)
 {
-	scanner.tokens[scanner.tok_count].type = type;
-	scanner.tokens[scanner.tok_count].lexeme = substr(scanner.source, scanner.start, scanner.current);
-	scanner.tokens[scanner.tok_count++].line= scanner.line;
+	scanner->tokens[scanner->tok_count].type = type;
+	scanner->tokens[scanner->tok_count].lexeme = substr(scanner->source, scanner->start, scanner->current);
+	scanner->tokens[scanner->tok_count++].line= scanner->line;
 }
 
-byte next_char(Scanner scanner)
+byte next_char(Scanner *scanner)
 {
-	return 'a';
+	printf("GOT TO THIS CHAR %c\n", scanner->source[scanner->current]);
+	return scanner->source[scanner->current++];
 }
 
 Token *tokenize_source(byte *source)
@@ -46,12 +47,12 @@ Token *tokenize_source(byte *source)
 
 	while (scanner.current < src_len)
 	{
-		byte c = next_char(scanner);
-		switch (c)
-		{
-			
-
-		}
+		byte c = next_char(&scanner);
+		// switch (c)
+		// {
+		// 	
+		//
+		// }
 
 	}
 

@@ -41,9 +41,9 @@ typedef struct Scanner
 
 byte *substr(byte *source, usize start, usize current);
 
-void add_token(Scanner scanner, token_type type);
+void add_token(Scanner *scanner, token_type type);
 
-byte next_char(Scanner scanner);
+byte next_char(Scanner *scanner);
 
 Token *tokenize_source(byte *source);
 
