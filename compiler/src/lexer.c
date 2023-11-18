@@ -24,6 +24,10 @@ void add_token(Scanner *scanner, token_type type)
 	scanner->tokens[scanner->tok_count].type = type;
 	scanner->tokens[scanner->tok_count].lexeme = substr(scanner->source, scanner->start, scanner->current);
 	scanner->tokens[scanner->tok_count++].line= scanner->line;
+
+	printf("New Token %s\n", scanner->tokens[scanner->tok_count-1].lexeme);
+
+	scanner->start = scanner->current;
 }
 
 byte next_char(Scanner *scanner)
@@ -49,14 +53,14 @@ Token *tokenize_source(byte *source)
 		byte c = next_char(&scanner);
 		switch (c)
 		{
-			case ',': add_token(&scanner, COMMA); break;
+			case ',': add_token(&scanner, COMMA);     break;
 			case ';': add_token(&scanner, SEMICOLON); break;
-			case ':': add_token(&scanner, COLON); break;
-			case '=': add_token(&scanner, EQUALS); break;
-			case '+': add_token(&scanner, PLUS); break;
-			case '-': add_token(&scanner, MINUS); break;
-			case '*': add_token(&scanner, MUL); break;
-			case '/': add_token(&scanner, DIV); break;
+			case ':': add_token(&scanner, COLON);     break;
+			case '=': add_token(&scanner, EQUALS);		break;
+			case '+': add_token(&scanner, PLUS);			break;
+			case '-': add_token(&scanner, MINUS);			break;
+			case '*': add_token(&scanner, MUL);				break;
+			case '/': add_token(&scanner, DIV);				break;
 			default: break;
 		}
 
