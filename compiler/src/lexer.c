@@ -60,7 +60,8 @@ Token *tokenize_source(byte *source)
 			case '+': add_token(&scanner, PLUS);			break;
 			case '-': add_token(&scanner, MINUS);			break;
 			case '*': add_token(&scanner, MUL);				break;
-			case '/': add_token(&scanner, DIV);				break;
+			//case '/': add_token(&scanner, DIV);				break;
+
 			default: break;
 		}
 
