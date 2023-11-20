@@ -45,6 +45,8 @@ void add_token(Scanner *scanner, token_type type);
 
 byte next_char(Scanner *scanner);
 
+byte peek(Scanner *scanner);
+
 Token *tokenize_source(byte *source);
 
 

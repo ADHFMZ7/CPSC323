@@ -38,6 +38,11 @@ byte next_char(Scanner *scanner)
 	return scanner->source[scanner->current++];
 }
 
+byte peek(Scanner *scanner)
+{
+	return scanner->source[scanner->current];
+}
+
 Token *tokenize_source(byte *source)
 {
 
@@ -58,8 +63,14 @@ Token *tokenize_source(byte *source)
 		{
 			case '(':
 				// Handle condition of it being a comment	
+				
+				if (next_char(&scanner) == '*') 
+				{
+
+
+				}
 				add_token(&scanner, LEFT_PAREN); break;
-			case ')': add_token(&sacnner, RIGHT_PAREN); break;
+			case ')': add_token(&scanner, RIGHT_PAREN); break;
 			case ',': add_token(&scanner, COMMA);       break;
 			case ';': add_token(&scanner, SEMICOLON);   break;
 			case ':': add_token(&scanner, COLON);       break;
@@ -68,8 +79,12 @@ Token *tokenize_source(byte *source)
 			case '-': add_token(&scanner, MINUS);	  		break;
 			case '*': add_token(&scanner, MUL);		  		break;
 			case '/': add_token(&scanner, DIV);		  		break;
-			default: break;
-			// Now handle number, identifier, string case
+			default: 
+				
+
+
+
+			// Now handle number, identifier, keywords, string case
 
 
 		}
