@@ -21,6 +21,9 @@ byte *substr(byte *source, usize start, usize current)
 
 void add_token(Scanner *scanner, token_type type)
 {
+
+	// Cover case where the token array exceeds the buffer count.
+
 	scanner->tokens[scanner->tok_count].type = type;
 	scanner->tokens[scanner->tok_count].lexeme = substr(scanner->source, scanner->start, scanner->current);
 	scanner->tokens[scanner->tok_count++].line= scanner->line;
@@ -53,16 +56,22 @@ Token *tokenize_source(byte *source)
 		byte c = next_char(&scanner);
 		switch (c)
 		{
-			case ',': add_token(&scanner, COMMA);     break;
-			case ';': add_token(&scanner, SEMICOLON); break;
-			case ':': add_token(&scanner, COLON);     break;
-			case '=': add_token(&scanner, EQUALS);		break;
-			case '+': add_token(&scanner, PLUS);			break;
-			case '-': add_token(&scanner, MINUS);			break;
-			case '*': add_token(&scanner, MUL);				break;
-			//case '/': add_token(&scanner, DIV);				break;
-
+			case '(':
+				// Handle condition of it being a comment	
+				add_token(&scanner, LEFT_PAREN); break;
+			case ')': add_token(&sacnner, RIGHT_PAREN); break;
+			case ',': add_token(&scanner, COMMA);       break;
+			case ';': add_token(&scanner, SEMICOLON);   break;
+			case ':': add_token(&scanner, COLON);       break;
+			case '=': add_token(&scanner, EQUALS);	  	break;
+			case '+': add_token(&scanner, PLUS);	  		break;
+			case '-': add_token(&scanner, MINUS);	  		break;
+			case '*': add_token(&scanner, MUL);		  		break;
+			case '/': add_token(&scanner, DIV);		  		break;
 			default: break;
+			// Now handle number, identifier, string case
+
+
 		}
 
 	}
