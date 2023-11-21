@@ -1,3 +1,7 @@
+(*THIS IS A COMMENT *)
+
+"This is a string and theres even a (*comment*) in it"
+
 program f2023;
 (* This program computes and prints the value
 of an expression *)
@@ -12,5 +16,5 @@ write ( c ); (* display c *)
 
 (* compute the value of the expression *)
 ba = a1 * ( b2a + 2 * c) ;
-write ( “value=”, ba ) ; (* print the value of ba*)
+write ( "value=", ba ) ; (* print the value of ba*)
 end.

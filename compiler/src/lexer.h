@@ -47,6 +47,8 @@ byte next_char(Scanner *scanner);
 
 byte peek(Scanner *scanner);
 
+i32 is_identifier(char *string);
+
 Token *tokenize_source(byte *source);
 
 

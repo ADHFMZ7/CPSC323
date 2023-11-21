@@ -2,6 +2,7 @@
 #include "lexer.h"
 #include <string.h>
 #include <stdio.h>
+#include <wctype.h>
 
 #define BUF_SIZE 1024
 
@@ -28,7 +29,8 @@ void add_token(Scanner *scanner, token_type type)
 	scanner->tokens[scanner->tok_count].lexeme = substr(scanner->source, scanner->start, scanner->current);
 	scanner->tokens[scanner->tok_count++].line= scanner->line;
 
-	printf("New Token %s\n", scanner->tokens[scanner->tok_count-1].lexeme);
+	printf("New Token <%s> of type %d\n", scanner->tokens[scanner->tok_count-1].lexeme, scanner->tokens[scanner->tok_count-1].type);
+	// printf("New Token of type %d\n", scanner->tokens[scanner->tok_count-1].type);
 
 	scanner->start = scanner->current;
 }
@@ -41,6 +43,11 @@ byte next_char(Scanner *scanner)
 byte peek(Scanner *scanner)
 {
 	return scanner->source[scanner->current];
+}
+
+i32 is_identifier(char *string)
+{
+
 }
 
 Token *tokenize_source(byte *source)
@@ -59,17 +66,34 @@ Token *tokenize_source(byte *source)
 	while (scanner.current < src_len)
 	{
 		byte c = next_char(&scanner);
+
+		while (iswspace(c)) 
+		{
+			scanner.start = scanner.current;
+			c = next_char(&scanner);
+		}
+
 		switch (c)
 		{
 			case '(':
 				// Handle condition of it being a comment	
-				
-				if (next_char(&scanner) == '*') 
+			
+	
+				// (* the text of the comment *)
+				if (peek(&scanner) == '*') 
 				{
-
-
+					// We are in a comment
+					next_char(&scanner);
+					while (next_char(&scanner) != '*' && peek(&scanner) != ')') {}
+					next_char(&scanner);
+					scanner.start = scanner.current;
+					break;
 				}
-				add_token(&scanner, LEFT_PAREN); break;
+				else 
+				{
+					add_token(&scanner, LEFT_PAREN); break;
+				}
+
 			case ')': add_token(&scanner, RIGHT_PAREN); break;
 			case ',': add_token(&scanner, COMMA);       break;
 			case ';': add_token(&scanner, SEMICOLON);   break;
@@ -79,10 +103,21 @@ Token *tokenize_source(byte *source)
 			case '-': add_token(&scanner, MINUS);	  		break;
 			case '*': add_token(&scanner, MUL);		  		break;
 			case '/': add_token(&scanner, DIV);		  		break;
-			default: 
-				
+			case '"':
+				next_char(&scanner);
+				while (peek(&scanner) != '"')
+				{
+					next_char(&scanner);
+				}
+				next_char(&scanner);
+				add_token(&scanner, STRING);
+				break;
 
-
+			default:  
+					printf("UNKNOWN TOKEN %s\n", substr(scanner.source, scanner.start, scanner.current));
+					break;
+			
+			// if (c == )	
 
 			// Now handle number, identifier, keywords, string case
 
@@ -90,5 +125,5 @@ Token *tokenize_source(byte *source)
 		}
 
 	}
-
+	return tokens;
 }
