@@ -69,6 +69,7 @@ Token *tokenize_source(byte *source)
 
 		while (iswspace(c)) 
 		{
+			if (c == '\n') scanner.line++;
 			scanner.start = scanner.current;
 			c = next_char(&scanner);
 		}
@@ -93,7 +94,7 @@ Token *tokenize_source(byte *source)
 				{
 					add_token(&scanner, LEFT_PAREN); break;
 				}
-
+			
 			case ')': add_token(&scanner, RIGHT_PAREN); break;
 			case ',': add_token(&scanner, COMMA);       break;
 			case ';': add_token(&scanner, SEMICOLON);   break;
