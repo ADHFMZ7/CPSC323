@@ -14,7 +14,10 @@ typedef enum token_type
 	NUMBER, IDENTIFIER, STRING,
 
 	// keywords
-	PROGRAM, VAR, BEGIN, END, INTEGER, WRITE
+	PROGRAM, VAR, BEGIN, END, INTEGER, WRITE,
+
+	VOID	
+	
 
 } token_type;
 
@@ -47,7 +50,7 @@ byte next_char(Scanner *scanner);
 
 byte peek(Scanner *scanner);
 
-i32 is_identifier(char *string);
+token_type identifier(char *string);
 
 Token *tokenize_source(byte *source);
 

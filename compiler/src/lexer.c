@@ -45,9 +45,36 @@ byte peek(Scanner *scanner)
 	return scanner->source[scanner->current];
 }
 
-i32 is_identifier(char *string)
+token_type identifier(char *string)
 {
-
+	if (strcmp(string, "program"))
+	{
+		return PROGRAM;
+	}
+	else if (strcmp(string, "var"))
+	{
+		return VAR;
+	}
+	else if (strcmp(string, "begin"))
+	{
+		return BEGIN;
+	}
+	else if (strcmp(string, "integer"))
+	{
+		return INTEGER;
+	}
+	else if (strcmp(string, "write"))
+	{
+		return WRITE;
+	}
+	else if (strcmp(string, "end"))
+	{
+		return END;
+	}
+	else
+	{
+		return VOID;
+	}
 }
 
 Token *tokenize_source(byte *source)
@@ -115,6 +142,13 @@ Token *tokenize_source(byte *source)
 				break;
 
 			default:  
+				
+				token_type identifier_type = identifier(substr(scanner.source, scanner.start, scanner.current));
+
+				if (identifier_type != VOID)
+				{
+					break;
+				}
 					printf("UNKNOWN TOKEN %s\n", substr(scanner.source, scanner.start, scanner.current));
 					break;
 			
