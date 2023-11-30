@@ -47,27 +47,27 @@ byte peek(Scanner *scanner)
 
 token_type identifier(char *string)
 {
-	if (strcmp(string, "program"))
+	if (!strcmp(string, "program"))
 	{
 		return PROGRAM;
 	}
-	else if (strcmp(string, "var"))
+	else if (!strcmp(string, "var"))
 	{
 		return VAR;
 	}
-	else if (strcmp(string, "begin"))
+	else if (!strcmp(string, "begin"))
 	{
 		return BEGIN;
 	}
-	else if (strcmp(string, "integer"))
+	else if (!strcmp(string, "integer"))
 	{
 		return INTEGER;
 	}
-	else if (strcmp(string, "write"))
+	else if (!strcmp(string, "write"))
 	{
 		return WRITE;
 	}
-	else if (strcmp(string, "end"))
+	else if (!strcmp(string, "end"))
 	{
 		return END;
 	}
@@ -142,16 +142,21 @@ Token *tokenize_source(byte *source)
 				break;
 
 			default:  
-				
+						{	
 				token_type identifier_type = identifier(substr(scanner.source, scanner.start, scanner.current));
 
 				if (identifier_type != VOID)
 				{
-					break;
+					printf("IDENTIFIER: %s\n", substr(scanner.source, scanner.start, scanner.current));
+					printf("IDENTIFIER TYPE: %d\n", identifier_type);
 				}
+				else 
+				{
+				
 					printf("UNKNOWN TOKEN %s\n", substr(scanner.source, scanner.start, scanner.current));
+				}
 					break;
-			
+					}	
 			// if (c == )	
 
 			// Now handle number, identifier, keywords, string case
