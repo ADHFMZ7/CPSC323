@@ -20,13 +20,18 @@ byte *substr(byte *source, usize start, usize current)
 	return buffer;
 }
 
+byte *substr_s(Scanner *scanner)
+{
+	return substr(scanner->source, scanner->start, scanner->current);
+}
+
 void add_token(Scanner *scanner, token_type type)
 {
 
 	// Cover case where the token array exceeds the buffer count.
 
 	scanner->tokens[scanner->tok_count].type = type;
-	scanner->tokens[scanner->tok_count].lexeme = substr(scanner->source, scanner->start, scanner->current);
+	scanner->tokens[scanner->tok_count].lexeme = substr_s(scanner);
 	scanner->tokens[scanner->tok_count++].line= scanner->line;
 
 	printf("New Token <%s> of type %d\n", scanner->tokens[scanner->tok_count-1].lexeme, scanner->tokens[scanner->tok_count-1].type);
@@ -45,7 +50,7 @@ byte peek(Scanner *scanner)
 	return scanner->source[scanner->current];
 }
 
-token_type identifier(char *string)
+token_type keyword(char *string)
 {
 	if (!strcmp(string, "program"))
 	{
@@ -67,7 +72,7 @@ token_type identifier(char *string)
 	{
 		return WRITE;
 	}
-	else if (!strcmp(string, "end"))
+	else if (!strcmp(string, "end."))
 	{
 		return END;
 	}
@@ -76,6 +81,7 @@ token_type identifier(char *string)
 		return VOID;
 	}
 }
+
 
 Token *tokenize_source(byte *source)
 {
@@ -90,7 +96,7 @@ Token *tokenize_source(byte *source)
 
 	Token *tokens = malloc(sizeof(Token) * BUF_SIZE);
 
-	while (scanner.current < src_len)
+	while (scanner.current < src_len - 1)
 	{
 		byte c = next_char(&scanner);
 
@@ -131,31 +137,26 @@ Token *tokenize_source(byte *source)
 			case '-': add_token(&scanner, MINUS);	  		break;
 			case '*': add_token(&scanner, MUL);		  		break;
 			case '/': add_token(&scanner, DIV);		  		break;
-			case '"':
+			case '"': // Handles Strings
 				next_char(&scanner);
-				while (peek(&scanner) != '"')
-				{
-					next_char(&scanner);
-				}
+				while (peek(&scanner) != '"') next_char(&scanner);
 				next_char(&scanner);
 				add_token(&scanner, STRING);
 				break;
 
 			default:  
-						{	
-				token_type identifier_type = identifier(substr(scanner.source, scanner.start, scanner.current));
+				{	
+				// Handles keywords and identifiers	
+				if (isalpha(c))
+					while (isalnum(peek(&scanner))) next_char(&scanner);
 
-				if (identifier_type != VOID)
-				{
-					printf("IDENTIFIER: %s\n", substr(scanner.source, scanner.start, scanner.current));
-					printf("IDENTIFIER TYPE: %d\n", identifier_type);
-				}
-				else 
-				{
-				
-					printf("UNKNOWN TOKEN %s\n", substr(scanner.source, scanner.start, scanner.current));
-				}
-					break;
+				if (!strcmp(substr_s(&scanner), "end") && peek(&scanner) == '.') next_char(&scanner);
+				token_type keyword_type = keyword(substr_s(&scanner));
+
+				if (keyword_type != VOID) add_token(&scanner, keyword_type);
+				else if (isalpha(c)) add_token(&scanner, IDENTIFIER);
+				else if (atol(substr_s(&scanner))) add_token(&scanner, INTEGER);
+				else fprintf(stderr, "Unknown Token\n");
 					}	
 			// if (c == )	
 
