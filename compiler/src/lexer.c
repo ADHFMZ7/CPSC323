@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <wctype.h>
 
+// TODO: Test this
+
 #define BUF_SIZE 1024
 
 byte *substr(byte *source, usize start, usize current)
@@ -147,7 +149,7 @@ Token *tokenize_source(byte *source)
 			default:  
 				{	
 				// Handles keywords and identifiers	
-				if (isalpha(c))
+				if (isalnum(c))
 					while (isalnum(peek(&scanner))) next_char(&scanner);
 
 				if (!strcmp(substr_s(&scanner), "end") && peek(&scanner) == '.') next_char(&scanner);
@@ -156,6 +158,7 @@ Token *tokenize_source(byte *source)
 				if (keyword_type != VOID) add_token(&scanner, keyword_type);
 				else if (isalpha(c)) add_token(&scanner, IDENTIFIER);
 				else if (atol(substr_s(&scanner))) add_token(&scanner, INTEGER);
+				else if (c == 0 || c == EOF) break;
 				else fprintf(stderr, "Unknown Token\n");
 					}	
 			// if (c == )	

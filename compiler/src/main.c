@@ -19,10 +19,12 @@ i32 main(i32 argc, byte **argv)
 	byte *buffer = (char *)malloc(file_size + 1);
 	fread(buffer, 1, file_size, file);
 	buffer[file_size] = '\0';
-
+	
 	fclose(file);
+	
+	Token *tokens = tokenize_source(buffer);
 
-	tokenize_source(buffer);
+	// MAKE IT APPEND A VOID TOKEN AFTER TO DENOTE END OF LIST
 
 	free(buffer);
 }
