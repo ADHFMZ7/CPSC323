@@ -27,7 +27,7 @@ typedef struct AST_Node
 } Token;
 
 // This struct handles the internal state of the scanner
-typedef struct Scanner
+typedef struct Parser
 {	
 	byte *source;
 	Token *tokens;

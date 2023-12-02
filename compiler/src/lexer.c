@@ -5,6 +5,7 @@
 #include <wctype.h>
 
 // TODO: Test this
+//			 Make lexer handle <sign> <number>
 
 #define BUF_SIZE 1024
 
@@ -36,7 +37,7 @@ void add_token(Scanner *scanner, token_type type)
 	scanner->tokens[scanner->tok_count].lexeme = substr_s(scanner);
 	scanner->tokens[scanner->tok_count++].line= scanner->line;
 
-	printf("New Token <%s> of type %d\n", scanner->tokens[scanner->tok_count-1].lexeme, scanner->tokens[scanner->tok_count-1].type);
+	// printf("New Token <%s> of type %d\n", scanner->tokens[scanner->tok_count-1].lexeme, scanner->tokens[scanner->tok_count-1].type);
 	// printf("New Token of type %d\n", scanner->tokens[scanner->tok_count-1].type);
 
 	scanner->start = scanner->current;
@@ -96,8 +97,6 @@ Token *tokenize_source(byte *source)
 										 .current = 0, 
 									   .line= 1 };
 
-	Token *tokens = malloc(sizeof(Token) * BUF_SIZE);
-
 	while (scanner.current < src_len - 1)
 	{
 		byte c = next_char(&scanner);
@@ -120,7 +119,10 @@ Token *tokenize_source(byte *source)
 				{
 					// We are in a comment
 					next_char(&scanner);
-					while (next_char(&scanner) != '*' && peek(&scanner) != ')') {}
+					while (next_char(&scanner) != '*' && peek(&scanner) != ')') 
+					{
+						scanner.line += peek(&scanner) == '\n';
+					}
 					next_char(&scanner);
 					scanner.start = scanner.current;
 					break;
@@ -141,7 +143,10 @@ Token *tokenize_source(byte *source)
 			case '/': add_token(&scanner, DIV);		  		break;
 			case '"': // Handles Strings
 				next_char(&scanner);
-				while (peek(&scanner) != '"') next_char(&scanner);
+				while (peek(&scanner) != '"') 
+				{
+					if (next_char(&scanner) == '\n') scanner.line++;
+				}
 				next_char(&scanner);
 				add_token(&scanner, STRING);
 				break;
@@ -169,5 +174,14 @@ Token *tokenize_source(byte *source)
 		}
 
 	}
-	return tokens;
+
+	add_token(&scanner, VOID);
+
+	return scanner.tokens;
+}
+
+void free_tokens(Token *tokens)
+{
+	for (usize ix = 0; tokens[ix].type != VOID; ix++) free(tokens[ix].lexeme);
+	free(tokens);
 }

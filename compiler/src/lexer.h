@@ -54,5 +54,6 @@ token_type keyword(char *string);
 
 Token *tokenize_source(byte *source);
 
+void free_tokens(Token *tokens);
 
 #endif
