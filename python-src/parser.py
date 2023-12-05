@@ -10,8 +10,6 @@ from tokenizer import tokenize_source, Token
 from error import report_parse_error
 
 def parse_expressions(tokens, all_errors=0):
-    for i in tokens:
-        print(i)
 
     stack = ['$', 'A']
 
@@ -20,10 +18,7 @@ def parse_expressions(tokens, all_errors=0):
     result = 1
 
     while stack:
-        
-        # print("Stack: ", stack)
         state = stack.pop()
-        #print(state)
         if tokens[curr_char].type == "STRING":
             current_token = "STRING"
         elif tokens[curr_char].type == "IDENTIFIER":
@@ -32,8 +27,6 @@ def parse_expressions(tokens, all_errors=0):
             current_token = "S"
         else:
             current_token = tokens[curr_char].type
-
-        #print(state, current_token, tokens[curr_char]) 
 
         if state == current_token: 
             if current_token == "B":

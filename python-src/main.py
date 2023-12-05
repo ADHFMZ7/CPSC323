@@ -14,7 +14,7 @@ def main():
 
     tokens = tokenize_source(input_string)
   
-    if parse_expressions(tokens, all_errors='-e' in sys.argv or '--show-all-errors' in sys.argv):
+    if parse_expressions(tokens, all_errors='-e' in sys.argv or '--show-all-errors' in sys.argv) == 1:
         generate_code(tokens)
     
 

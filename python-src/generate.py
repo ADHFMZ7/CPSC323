@@ -1,3 +1,5 @@
+from error import report_gen_error
+import os
 
 # PROGRAM <prog_name> ; var <dec-list> begin <stat-list> end.
 
@@ -16,6 +18,8 @@ def generate_code(tokens):
         curr += 4
         token = tokens[curr]
 
+    
+        var_names = []
         # var <dec-list>
         print("int ", end='', file=file)
         while True:
@@ -23,6 +27,8 @@ def generate_code(tokens):
                 print(';', file=file)
                 break
             else:
+                if token.lexeme != ',':
+                    var_names.append(token.lexeme) 
                 print(f"{token.lexeme} ", end='', file=file) 
             curr += 1
             token = tokens[curr]
@@ -36,7 +42,6 @@ def generate_code(tokens):
                 print("return 0;\n}", file=file)
                 break
             elif token.type == "write":
-
                 if tokens[curr + 2].type == "STRING":
                     a = tokens[curr+2].lexeme.strip('",')
                     print(f'printf("{a} %d\\n", {tokens[curr+3].lexeme});', file=file)
@@ -47,6 +52,9 @@ def generate_code(tokens):
             elif token.type == ';':
                 print(";", file=file)
             else:
+                if token.type == "IDENTIFIER" and token.lexeme not in var_names:
+                    report_gen_error(f"Use of undeclared identifier <{token.lexeme}>", token)
+                    os.remove("main.c")
                 print(token.lexeme, end='', file=file)
             curr += 1
             token = tokens[curr]

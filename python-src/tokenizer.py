@@ -90,7 +90,6 @@ def tokenize_source(source: str):
             elif char.isalpha():
                 scanner.add_token("IDENTIFIER")
             elif char.isnumeric():
-                print("LOOK HJERE n\n\n\n", scanner.substr())
                 scanner.add_token("int")
                 scanner.tokens[-1].lexeme = str(int(scanner.tokens[-1].lexeme))
             else:
