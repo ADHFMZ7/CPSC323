@@ -1,20 +1,19 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include "macros.h"
+#include "lexer.h"
 
 typedef enum node_type 
 {
 
-	COMMA, COLON, SEMICOLON, 
-	EQUALS, PLUS, MINUS, DIV, MUL,
+	PROG, EXPR, DECLIST, STATLIST,
 
-	LEFT_PAREN, RIGHT_PAREN,
+	DEC, STAT, TYPE
 
-	NUMBER, IDENTIFIER, STRING,
-
-	// keywords
-	PROGRAM, VAR, BEGIN, END, INTEGER, WRITE,
-
-	VOID	
 	
+
+	// VOID	
 
 } node_type;
 
@@ -24,17 +23,15 @@ typedef struct AST_Node
 	byte *lexeme;    // 
 	u8 line;		     // line of lexeme in source code. used for error handling
 
-} Token;
+} AST_Node;
 
 // This struct handles the internal state of the scanner
 typedef struct Parser
 {	
-	byte *source;
 	Token *tokens;
-	usize tok_count;
-
-	usize start;
 	usize current;
-	usize line;
+} Parser;
 
-} Scanner;
+AST_Node *parse_tokens(Token *tokens);
+
+#endif

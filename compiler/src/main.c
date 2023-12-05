@@ -29,7 +29,9 @@ i32 main(i32 argc, byte **argv)
 		printf("<%s>: on line %d\n", tokens[ix].lexeme, tokens[ix].line);
 	}
 
-	// MAKE IT APPEND A VOID TOKEN AFTER TO DENOTE END OF LIST
+	
+
+
 
 	free_tokens(tokens);
 	free(buffer);
