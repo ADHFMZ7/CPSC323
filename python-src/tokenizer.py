@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from table import keywords
+from error import report_token_error
 
 @dataclass
 class Token:
@@ -43,6 +44,7 @@ def tokenize_source(source: str):
         char = scanner.next_char()
 
         if scanner.source[scanner.current:len(scanner.source)].isspace():
+            scanner.tokens.append(Token('$', '$', 0))
             return scanner.tokens
 
         while char.isspace():
@@ -58,14 +60,14 @@ def tokenize_source(source: str):
                 scanner.next_char()
                 while scanner.next_char() != '*' and scanner.peek() != ')':
                     scanner.line += scanner.peek() == '\n'
+                scanner.next_char()
                 scanner.start = scanner.current
-                continue
             else:
                 scanner.add_token('(')
 
         elif char in "),;:=+-*/":
-            scanner.add_token(char) 
-
+            if not(scanner.peek().isnumeric() and char in '+-'):
+                scanner.add_token(char) 
 
         elif char == '"':
             scanner.next_char()
@@ -74,6 +76,8 @@ def tokenize_source(source: str):
                     scanner.line += 1
             scanner.next_char()
             scanner.add_token("STRING")
+            if scanner.peek() == ',':
+                scanner.next_char()
 
         elif char.isalnum():
             while scanner.peek().isalnum():
@@ -86,9 +90,11 @@ def tokenize_source(source: str):
             elif char.isalpha():
                 scanner.add_token("IDENTIFIER")
             elif char.isnumeric():
+                print("LOOK HJERE n\n\n\n", scanner.substr())
                 scanner.add_token("int")
+                scanner.tokens[-1].lexeme = str(int(scanner.tokens[-1].lexeme))
             else:
-                print("Unknown token")
+                report_token_error(scanner.substr(), scanner.line)
 
     scanner.tokens.append(Token('$', '$', 0))
     return scanner.tokens
