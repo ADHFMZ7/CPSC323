@@ -1,8 +1,8 @@
 
-
+keywords = ["program", "var", "begin", "end.", "integer", "write"]
 
 table = {
-    'A': {"program": "program B ; var D behin H end.", },
+    'A': {"program": "program B ; var D begin H end.", },
     'B': {"LET": "V C"},
     'C': {";": "_", ':': "_", ',': "_", ')': "_", '=': '_', '+': '_','-': '_','*': '_','/': '_', 'NUM':'U C', 'LET':'V C'},
     'D': {'LET': 'E : G ;'},

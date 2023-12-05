@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from table import keywords
 
 @dataclass
 class Token:
@@ -27,14 +28,13 @@ class Scanner:
                 Token(self.substr(),
                       type,
                       self.line))
-        print(self.tokens[-1])
+
+        self.start = self.current
 
     def substr(self):
         return self.source[self.start:self.current]
 
 def tokenize_source(source: str):
-
-    tokens = []
 
     scanner = Scanner(source)
 
@@ -42,17 +42,24 @@ def tokenize_source(source: str):
         
         char = scanner.next_char()
 
+        if scanner.source[scanner.current:len(scanner.source)].isspace():
+            return scanner.tokens
+
         while char.isspace():
             if char == '\n':
                 scanner.line += 1
             scanner.start = scanner.current
             char = scanner.next_char()
-
+    
+        
         if char == "(":
+            # Handles comments of the form (* COMMENT *)
             if scanner.peek() == '*':
                 scanner.next_char()
                 while scanner.next_char() != '*' and scanner.peek() != ')':
                     scanner.line += scanner.peek() == '\n'
+                scanner.start = scanner.current
+                continue
             else:
                 scanner.add_token('(')
 
@@ -61,7 +68,12 @@ def tokenize_source(source: str):
 
 
         elif char == '"':
-            pass
+            scanner.next_char()
+            while scanner.peek() != '"':
+                if scanner.next_char() == '\n':
+                    scanner.line += 1
+            scanner.next_char()
+            scanner.add_token("STRING")
 
         elif char.isalnum():
             while scanner.peek().isalnum():
@@ -69,8 +81,15 @@ def tokenize_source(source: str):
         
             if scanner.substr() == "end" and scanner.peek() == '.':
                 scanner.next_char()
-            scanner.add_token(scanner.substr()) 
+            if scanner.substr() in keywords:
+                scanner.add_token(scanner.substr()) 
+            elif char.isalpha():
+                scanner.add_token("IDENTIFIER")
+            elif char.isnumeric():
+                scanner.add_token("int")
+            else:
+                print("Unknown token")
 
-
-
+    scanner.tokens.append(Token('$', '$', 0))
+    return scanner.tokens
 
