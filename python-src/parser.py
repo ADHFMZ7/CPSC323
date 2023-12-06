@@ -11,6 +11,7 @@ from error import report_parse_error
 
 def parse_expressions(tokens, all_errors=0):
 
+
     stack = ['$', 'A']
 
     curr_char = 0

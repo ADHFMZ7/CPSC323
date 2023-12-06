@@ -38,7 +38,7 @@ def tokenize_source(source: str):
 
     scanner = Scanner(source)
 
-    while scanner.current < len(source):
+    while scanner.current < len(source) - 1:
         
         char = scanner.next_char()
 
