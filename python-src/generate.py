@@ -6,7 +6,7 @@ import os
 class AST_Node:
     pass    
 
-
+# FIX THE AFTER FINAL TOKEN BUG
 
 def generate_code(tokens):
     curr = 0 

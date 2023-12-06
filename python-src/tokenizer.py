@@ -29,7 +29,6 @@ class Scanner:
                 Token(self.substr(),
                       type,
                       self.line))
-
         self.start = self.current
 
     def substr(self):
@@ -52,7 +51,6 @@ def tokenize_source(source: str):
                 scanner.line += 1
             scanner.start = scanner.current
             char = scanner.next_char()
-    
         
         if char == "(":
             # Handles comments of the form (* COMMENT *)
@@ -66,8 +64,8 @@ def tokenize_source(source: str):
                 scanner.add_token('(')
 
         elif char in "),;:=+-*/":
-            if not(scanner.peek().isnumeric() and char in '+-'):
-                scanner.add_token(char) 
+            #if not(scanner.peek().isnumeric()):
+            scanner.add_token(char) 
 
         elif char == '"':
             scanner.next_char()
@@ -91,7 +89,7 @@ def tokenize_source(source: str):
                 scanner.add_token("IDENTIFIER")
             elif char.isnumeric():
                 scanner.add_token("int")
-                scanner.tokens[-1].lexeme = str(int(scanner.tokens[-1].lexeme))
+                #scanner.tokens[-1].lexeme = str(int(scanner.tokens[-1].lexeme))
             else:
                 report_token_error(scanner.substr(), scanner.line)
 
