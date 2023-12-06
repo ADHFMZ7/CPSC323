@@ -66,9 +66,5 @@ def parse_expressions(tokens, all_errors=0):
                 continue
             return False
 
-    if result == -1:
-        print("Not accepted")
-    else:
-        print("Accepted")
     return result
 

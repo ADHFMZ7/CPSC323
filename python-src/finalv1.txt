@@ -1,0 +1,13 @@
+(*THIS IS A COMMENT *)
+program test;
+var variable, not, huge: integer;
+begin 
+
+huge= 10 + -1 * (-10*-7*(42-75*(87*20)+60*(-90-80))) + -1 * 12;
+write("The valuse is ", not);
+variable = 10;
+end.   	 			  
+
+
+
+

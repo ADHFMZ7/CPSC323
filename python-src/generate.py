@@ -1,5 +1,4 @@
 from error import report_gen_error
-import os
 
 # PROGRAM <prog_name> ; var <dec-list> begin <stat-list> end.
 
@@ -8,11 +7,13 @@ class AST_Node:
 
 # FIX THE AFTER FINAL TOKEN BUG
 
-def generate_code(tokens):
+def generate_code(tokens, out_file, all_errors=0):
     curr = 0 
     token = tokens[curr]
-    
-    with open("main.c", "w") as file:
+   
+    ret = 1
+
+    with open(out_file, "w") as file:
         # program <identifier>;
         print("#include <stdio.h>\nint main() {", file=file)
         curr += 4
@@ -43,22 +44,32 @@ def generate_code(tokens):
                 break
             elif token.type == "write":
                 if tokens[curr + 2].type == "STRING":
-                    a = tokens[curr+2].lexeme.strip('",')
-                    print(f'printf("{a} %d\\n", {tokens[curr+3].lexeme});', file=file)
+                    a = tokens[curr+2].lexeme.strip('",') + ' '
+                    num = tokens[curr+3]
                     curr += 5
                 else:
-                    print(f'printf("%d\\n", {tokens[curr+2].lexeme});', file=file)
+                    a = ''
+                    num = tokens[curr+2]
                     curr += 4
+
+                if num.lexeme not in var_names:
+                    report_gen_error(f"Use of undeclared identifier <{num.lexeme}>", num)
+                    if not all_errors:
+                        return False 
+                    ret = 0 
+
+                print(f'printf("{a}%d\\n", {num.lexeme});', file=file)
             elif token.type == ';':
                 print(";", file=file)
             else:
                 if token.type == "IDENTIFIER" and token.lexeme not in var_names:
                     report_gen_error(f"Use of undeclared identifier <{token.lexeme}>", token)
-                    os.remove("main.c")
+                    if not all_errors:
+                        return False
+                    ret = 0
                 print(token.lexeme, end='', file=file)
             curr += 1
             token = tokens[curr]
 
-
-
+    return ret 
 
