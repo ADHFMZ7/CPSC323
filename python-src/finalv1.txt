@@ -3,7 +3,7 @@ program f2023;
 of an expression *) [
 var
 (* declare variables *)
-a2 , b2a , c, ba : integer ;
+a1, a2 , b2a , c, ba : integer ;
 begin
 a1 = 3 ;
 write ( a1 ); (* display c *)
