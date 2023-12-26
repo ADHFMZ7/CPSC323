@@ -18,5 +18,5 @@ characters.
 
 ## Code generation
 The compiler uses a very rudimentary technique to generate code. It checks for very simple semantic errors and 
-the equivalent C code.
+generates the equivalent C code.
 
